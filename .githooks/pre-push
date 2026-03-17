@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+echo "🔍 Running pre-push checks..."
+
+echo "📦 Building..."
+xcodebuild -scheme ComicPull -sdk iphonesimulator \
+  -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' \
+  build 2>&1 | tail -5
+
+echo "🧪 Running unit tests..."
+xcodebuild -scheme ComicPull -sdk iphonesimulator \
+  -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' \
+  -only-testing:ComicPullTests test 2>&1 | tail -5
+
+echo "✅ All checks passed. Pushing..."
